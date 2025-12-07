@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row mb-3">
-    <div class="col-12">
-        <h2 class="pb-2">🗺️ Тур: «Пермь Великая»</h2>
-    </div>
-</div>
+<!-- Верхний ряд с заголовком мы УДАЛИЛИ -->
 
-<div class="row h-100">
-    <!-- Сайдбар -->
+<div class="row h-100 mt-3"> <!-- Добавил отступ сверху (mt-3) -->
+    
+    <!-- Сайдбар (Правая колонка) -->
     <div class="col-lg-4 order-lg-2 mb-4">
+        
+        <!-- ЗАГОЛОВОК ТЕПЕРЬ ЗДЕСЬ -->
+        <h3 class="mb-3 text-success">🗺️ Тур: «Пермь Великая»</h3>
+        
         <!-- Важно: id="sidebar-container" для управления скроллом -->
         <div id="sidebar-container" class="list-group shadow-sm overflow-auto" style="max-height: 600px; position: relative;">
             <div class="list-group-item list-group-item-action active bg-success border-success">
@@ -26,7 +27,7 @@
         </div>
     </div>
 
-    <!-- Карта -->
+    <!-- Карта (Левая колонка) -->
     <div class="col-lg-8 order-lg-1">
         <div id="map-container" style="position: relative;">
             <div id="map" class="shadow-lg border border-3 border-white" style="height: 600px; width: 100%; border-radius: 12px;"></div>
@@ -112,16 +113,13 @@
     // 4. ГЛАВНЫЙ ЦИКЛ
     function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-    // Функция безопасного скролла (Только внутри контейнера списка)
+    // Функция безопасного скролла
     function scrollToActiveItem(index) {
         const container = document.getElementById('sidebar-container');
         const activeLink = document.getElementById('link-' + index);
         
         if (container && activeLink) {
-            // Вычисляем позицию, чтобы элемент оказался по центру списка
             const topPos = activeLink.offsetTop - (container.clientHeight / 2) + (activeLink.clientHeight / 2);
-            
-            // Крутим только контейнер! Страница не прыгает.
             container.scrollTo({
                 top: topPos,
                 behavior: 'smooth'
@@ -151,15 +149,14 @@
             let activeLink = document.getElementById('link-' + currentStopIndex);
             if (activeLink) {
                 activeLink.classList.add('active-item');
-                scrollToActiveItem(currentStopIndex); // <--- Вот здесь было исправление
+                scrollToActiveItem(currentStopIndex);
             }
 
             // ПОЛЕТ
             map.flyTo(currentStop.coords, targetZoom, { 
                 duration: 4, 
-                // Увеличили линейность: полет будет более "плоским", меньше искажений линии
                 easeLinearity: 0.5, 
-                noMoveStart: true // Предотвращает лишние события
+                noMoveStart: true 
             });
 
             // Ждем
