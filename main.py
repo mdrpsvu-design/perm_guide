@@ -78,7 +78,7 @@ STOPS = [
             солеварни, ветряная мельница, усадьбы крестьян. Здесь можно увидеть, 
             как добывали соль — «белое золото», сделавшее Строгановых богатейшими людьми России.
         """,
-        "images": ["hohlovka.jpg", "hohlovka1.webp", "hohlovka2.webp", "hohlovka3.webp"],
+        "images": ["hohlovka.jpg", "hohlovka1.webp", "hohlovka2.webp", "hohlovka3.webp", "hohlovka4.jpg", "hohlovka5.jpg"],
         "audio": "stop2.wav",
         "type": "history"
     },
