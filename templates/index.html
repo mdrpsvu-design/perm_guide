@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- БЛОК ПРИВЕТСТВИЯ -->
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm" style="background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Kama_River_in_Perm.jpg/1200px-Kama_River_in_Perm.jpg'); background-size: cover; background-position: center;">
+    <div class="container-fluid py-5">
+        <h1 class="display-4 fw-bold text-dark">{{ info.title }}</h1>
+        <p class="col-md-8 fs-4 text-muted">{{ info.subtitle }}</p>
+        <hr class="my-4">
+        <p>Добро пожаловать в интерактивный путеводитель. Узнайте историю промышленного сердца Урала и пройдите наш уникальный маршрут.</p>
+        <a href="/map" class="btn btn-success btn-lg px-4 gap-3 shadow">
+            Построить маршрут 🚀
+        </a>
+    </div>
+</div>
+
+<!-- ИНФОРМАЦИОННЫЕ БЛОКИ -->
+<div class="row align-items-stretch g-4">
+    
+    <!-- География -->
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm hover-effect">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="fs-2 me-3">🌲</span>
+                    <h2 class="card-title h4 m-0">География и Природа</h2>
+                </div>
+                <p class="card-text text-secondary">{{ info.geography }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Экономика -->
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm hover-effect">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="fs-2 me-3">🏭</span>
+                    <h2 class="card-title h4 m-0">Экономика и Ресурсы</h2>
+                </div>
+                <p class="card-text text-secondary">{{ info.economy }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Культура -->
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm hover-effect">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="fs-2 me-3">🎨</span>
+                    <h2 class="card-title h4 m-0">Культура и Традиции</h2>
+                </div>
+                <p class="card-text text-secondary">{{ info.culture }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Религия -->
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm hover-effect">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="fs-2 me-3">⛪</span>
+                    <h2 class="card-title h4 m-0">Духовные центры</h2>
+                </div>
+                <p class="card-text text-secondary">{{ info.religion }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Блок призыва к действию -->
+<div class="row mt-5 text-center">
+    <div class="col-lg-8 mx-auto">
+        <h3 class="mb-3">Готовы увидеть это своими глазами?</h3>
+        <p class="lead text-muted">Мы подготовили маршрут из 10 уникальных точек: от подземелий Кунгура до вершин Полюда.</p>
+        <a href="/map" class="btn btn-outline-dark btn-lg mt-2">Перейти к карте</a>
+    </div>
+</div>
+
+<style>
+    /* Легкий эффект при наведении на карточки */
+    .hover-effect {
+        transition: transform 0.3s ease;
+    }
+    .hover-effect:hover {
+        transform: translateY(-5px);
+    }
+</style>
+{% endblock %}

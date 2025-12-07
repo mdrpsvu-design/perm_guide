@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пермь Великая: Интерактивный гид</title>
+    <!-- Иконка вкладки (Медведь) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐻</text></svg>">
+    
+    <!-- Подключаем Bootstrap 5 (Стили) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Подключаем Google Fonts (Шрифты для красивой типографики) -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Подключаем Leaflet (Стили для карты) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        /* == КАСТОМНЫЙ ДИЗАЙН == */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9; /* Светлый фон */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Заголовки с засечками для "книжного" стиля */
+        h1, h2, h3, h4, h5, .navbar-brand {
+            font-family: 'Merriweather', serif;
+        }
+
+        /* Навигация в цветах Пермского края (глубокий синий/зеленый) */
+        .navbar {
+            background: linear-gradient(90deg, #004d40, #00695c);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Основной контейнер контента */
+        .main-content {
+            flex: 1; /* Чтобы подвал всегда был внизу */
+            padding-bottom: 40px;
+        }
+
+        /* Подвал */
+        footer {
+            background-color: #263238;
+            color: #cfd8dc;
+            margin-top: auto;
+        }
+
+        /* Стили для карты (будут использоваться на map.html) */
+        #map { 
+            height: 600px; 
+            width: 100%; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 2px solid #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- МЕНЮ НАВИГАЦИИ -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">🐻 ПЕРМСКИЙ КРАЙ</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">О регионе</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/map">🗺️ Карта маршрута</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- СЮДА БУДЕТ ВСТАВЛЯТЬСЯ КОНТЕНТ ДРУГИХ СТРАНИЦ -->
+    <div class="main-content container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- ПОДВАЛ -->
+    <footer class="text-center py-4">
+        <div class="container">
+            <p class="mb-1">Проектное задание «Создание интерактивного путеводителя по региону»</p>
+            <small class="text-muted">© 2025 Разработано на Python (FastAPI)</small>
+        </div>
+    </footer>
+
+    <!-- СКРИПТЫ BOOTSTRAP -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
