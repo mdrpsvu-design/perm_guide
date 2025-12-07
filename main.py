@@ -142,7 +142,7 @@ STOPS = [
             Монастырь имеет трагическую судьбу: в годы Гражданской войны монахи были зверски убиты, 
             а храм осквернен. Возрождение обители стало символом духовного возрождения региона.
         """,
-        "images": ["belogorye.jpg"],
+        "images": ["belogorye.jpg", "belogorye1.jpg", "belogorye2.jpg", "belogorye3.jpg", "belogorye4.jpg"],
         "audio": "stop5.wav",
         "type": "religion"
     },
@@ -157,7 +157,7 @@ STOPS = [
             Геологически это дно древнего Пермского моря. Место овеяно легендами 
             и обладает особой энергетикой, привлекающей туристов и эзотериков.
         """,
-        "images": ["stone_city.jpg"],
+        "images": ["stone_city.jpg", "stone_city1.webp", "stone_city2.webp", "stone_city3.webp"],
         "audio": "stop6.wav",
         "type": "nature"
     },
@@ -172,7 +172,7 @@ STOPS = [
             Усолье было столицей империи Строгановых — промышленников, которые 
             снарядили поход Ермака и фактически присоединили Сибирь к России.
         """,
-        "images": ["usolye.jpg"],
+        "images": ["usolye.jpg", "usolye1.webp", "usolye2.webp", "usolye3.jpg"],
         "audio": "stop7.wav",
         "type": "history"
     },
@@ -187,7 +187,7 @@ STOPS = [
             солью, краснели и распухали. Скульптура состоит из рамки с ушами (где можно сфотографироваться) 
             и фигуры фотографа. Символ самоиронии пермяков.
         """,
-        "images": ["ushi.jpg"],
+        "images": ["ushi.jpg", "ushi1.webp"],
         "audio": "stop8.wav",
         "type": "culture"
     },
@@ -202,7 +202,7 @@ STOPS = [
             С вершины открывается невероятный вид на «море» тайги и соседний камень Ветлан. 
             Популярнейшее место для зимнего и летнего туризма.
         """,
-        "images": ["polyud.jpg"],
+        "images": ["polyud.jpg", "polyud1.webp", "polyud2.jpg", "polyud3.webp"],
         "audio": "stop9.wav",
         "type": "nature"
     },
@@ -217,7 +217,7 @@ STOPS = [
             получает новую жизнь (креативная экономика), сохраняя исторический облик стен, 
             где трудились поколения пермских рабочих.
         """,
-        "images": ["shpagin.jpg"],
+        "images": ["shpagin.jpg", "shpagin1.webp", "shpagin2.jpg", "shpagin3.webp"],
         "audio": "stop10.wav",
         "type": "modern"
     }
