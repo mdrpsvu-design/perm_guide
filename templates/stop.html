@@ -15,11 +15,40 @@
     <div class="col-lg-5 mb-4">
         <div class="card shadow-sm border-0">
             <!-- Изображение с заглушкой, если файла нет -->
-            <img src="/static/img/{{ stop.img }}" 
-                 class="card-img-top" 
-                 alt="{{ stop.title }}" 
-                 style="height: 300px; object-fit: cover;"
-                 onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400?text=Фото+объекта+Перми';">
+            <!-- КАРУСЕЛЬ (Слайд-шоу) -->
+            <div id="carouselStop" class="carousel slide mb-4 shadow rounded overflow-hidden" data-bs-ride="carousel">
+                
+                <!-- Индикаторы (полоски внизу) -->
+                <div class="carousel-indicators">
+                    {% for image in stop.images %}
+                    <button type="button" data-bs-target="#carouselStop" data-bs-slide-to="{{ loop.index0 }}" 
+                            class="{% if loop.first %}active{% endif %}" aria-current="true"></button>
+                    {% endfor %}
+                </div>
+    
+                <!-- Сами слайды -->
+                <div class="carousel-inner">
+                    {% for image in stop.images %}
+                    <!-- data-bs-interval="3000" означает 3 секунды (3000 мс) -->
+                    <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="3000">
+                        <img src="/static/img/{{ image }}" class="d-block w-100" 
+                             alt="{{ stop.title }}" 
+                             style="height: 400px; object-fit: cover;"
+                             onerror="this.src='https://via.placeholder.com/800x400?text=Фото+загружается';">
+                    </div>
+                    {% endfor %}
+                </div>
+    
+                <!-- Стрелки управления (Влево/Вправо) -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselStop" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Предыдущее</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselStop" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Следующее</span>
+                </button>
+            </div>
             
             <div class="card-body bg-light">
                 <h5 class="card-title text-muted mb-3">Мультимедиа</h5>
