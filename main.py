@@ -94,7 +94,7 @@ STOPS = [
             и цене свободы слова. Объект включен в список памятников истории мирового значения.
         """,
         "img": "perm36.jpg",
-        "audio": None,
+        "audio": "stop3.wav",
         "type": "memory"
     },
     {
@@ -124,7 +124,7 @@ STOPS = [
             а храм осквернен. Возрождение обители стало символом духовного возрождения региона.
         """,
         "img": "belogorye.jpg",
-        "audio": None,
+        "audio": "stop5.wav",
         "type": "religion"
     },
     {
@@ -154,7 +154,7 @@ STOPS = [
             снарядили поход Ермака и фактически присоединили Сибирь к России.
         """,
         "img": "usolye.jpg",
-        "audio": None,
+        "audio": "stop7.wav",
         "type": "history"
     },
     {
@@ -184,7 +184,7 @@ STOPS = [
             Популярнейшее место для зимнего и летнего туризма.
         """,
         "img": "polyud.jpg",
-        "audio": None,
+        "audio": "stop9.wav",
         "type": "nature"
     },
     {
