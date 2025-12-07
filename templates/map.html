@@ -81,6 +81,10 @@
         return stop.coords;
     });
 
+    if (routeCoordinates.length > 0) {
+        routeCoordinates.push(routeCoordinates[0]);
+    }
+
     // 2. Рисуем полилинию (линию маршрута)
     var routeLine = L.polyline(routeCoordinates, {
         color: '#d32f2f',       // Цвет линии (красный)
