@@ -262,15 +262,25 @@ async def read_map(request: Request):
 
 @app.get("/stop/{stop_id}", response_class=HTMLResponse)
 async def read_stop(request: Request, stop_id: int):
-    """
-    Динамическая страница конкретной точки.
-    Ищет точку по ID. Если не находит - выдает 404.
-    """
-    stop = next((s for s in STOPS if s["id"] == stop_id), None)
-    if not stop:
+    # 1. Находим индекс текущей остановки в списке
+    # (enumerate помогает получить и индекс, и сам объект)
+    current_index = next((i for i, s in enumerate(STOPS) if s["id"] == stop_id), None)
+    
+    if current_index is None:
         raise HTTPException(status_code=404, detail="Остановка не найдена")
     
+    stop = STOPS[current_index]
+
+    # 2. Вычисляем ID соседей (с зацикливанием: после последнего идет первый)
+    prev_index = (current_index - 1) % len(STOPS)
+    next_index = (current_index + 1) % len(STOPS)
+    
+    prev_id = STOPS[prev_index]["id"]
+    next_id = STOPS[next_index]["id"]
+
     return templates.TemplateResponse("stop.html", {
         "request": request, 
-        "stop": stop
+        "stop": stop,
+        "prev_id": prev_id,
+        "next_id": next_id
     })
