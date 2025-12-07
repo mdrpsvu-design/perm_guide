@@ -112,12 +112,7 @@
 
     var group = new L.featureGroup([markersGroup]);
     
-    // Если мы продолжаем маршрут, центрируемся сразу на нужной точке, а не на всей карте
-    if (startAtId) {
-         // Ничего не делаем, flyTo сработает сразу
-    } else {
-         map.fitBounds(group.getBounds(), { padding: [50, 50] });
-    }
+    map.fitBounds(group.getBounds(), { padding: [50, 50] });
 
     // 3. ОТСЛЕЖИВАНИЕ ДЕЙСТВИЙ (ПАУЗА)
     const mapDiv = document.getElementById('map');
