@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col-12">
+        <h2 class="border-bottom pb-2">🗺️ Тур: «Пермь Великая»</h2>
+        <!-- Статус бар -->
+        <div id="status-bar" class="alert alert-success py-2 d-flex align-items-center shadow-sm">
+            <div id="spinner" class="spinner-grow spinner-grow-sm me-2" role="status"></div>
+            <span id="status-text" class="fw-bold">Запуск авто-тура...</span>
+        </div>
+        <p class="text-muted small mb-0">
+            ✋ <b>Интерактив:</b> Коснитесь карты или покрутите колесико мыши, чтобы поставить тур на паузу. 
+            Он продолжится сам через 5 секунд бездействия.
+        </p>
+    </div>
+</div>
+
+<div class="row h-100">
+    <!-- Сайдбар -->
+    <div class="col-lg-4 order-lg-2 mb-4">
+        <div class="list-group shadow-sm overflow-auto" style="max-height: 600px;">
+            <div class="list-group-item list-group-item-action active bg-success border-success">
+                Маршрут
+            </div>
+            {% for stop in stops %}
+            <a href="/stop/{{ stop.id }}" id="link-{{ loop.index0 }}" class="list-group-item list-group-item-action transition-bg">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span><strong>{{ stop.id }}.</strong> {{ stop.title }}</span>
+                    <span class="badge bg-secondary rounded-pill opacity-50" id="badge-{{ loop.index0 }}">Info</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Карта -->
+    <div class="col-lg-8 order-lg-1">
+        <!-- Важно: id="map-container" для отслеживания мыши -->
+        <div id="map-container" style="position: relative;">
+            <div id="map" class="shadow-lg border border-3 border-white" style="height: 600px; width: 100%; border-radius: 12px;"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .transition-bg { transition: all 0.5s ease; }
+    /* Подсветка активного элемента */
+    .active-item { 
+        background-color: #e8f5e9 !important; 
+        border-left: 5px solid #2e7d32 !important;
+        color: #1b5e20;
+    }
+</style>
+
+<!-- Скрипт карты -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // 1. НАСТРОЙКИ
+    var stops = {{ stops | tojson }};
+    var isUserInteracting = false;
+    var lastInteractionTime = 0;
+    var currentStopIndex = 0;
+    
+    // 2. ИНИЦИАЛИЗАЦИЯ КАРТЫ
+    var map = L.map('map', {
+        attributionControl: false,
+        zoomControl: false,
+        fadeAnimation: true,
+        zoomAnimation: true
+    });
+    
+    L.control.zoom({ position: 'topright' }).addTo(map);
+
+    // Легкие карты CartoDB (чтобы не было серых квадратов)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OSM &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19,
+        keepBuffer: 20 // Держим в памяти побольше тайлов
+    }).addTo(map);
+
+    // Маркеры и линия
+    var markersList = []; 
+    var markersGroup = L.featureGroup();
+
+    stops.forEach(function(stop) {
+        var marker = L.marker(stop.coords);
+        var popupContent = `
+            <div style="text-align: center;">
+                <h6 style="margin: 0; color: #004d40;">${stop.title}</h6>
+                <a href="/stop/${stop.id}" class="btn btn-sm btn-success text-white mt-2">Открыть</a>
+            </div>
+        `;
+        marker.bindPopup(popupContent);
+        marker.addTo(markersGroup);
+        markersList.push(marker);
+    });
+    markersGroup.addTo(map);
+
+    var routeCoordinates = stops.map(s => s.coords);
+    if (routeCoordinates.length > 0) routeCoordinates.push(routeCoordinates[0]);
+    L.polyline(routeCoordinates, {
+        color: '#d32f2f', weight: 4, opacity: 0.7, dashArray: '10, 10'
+    }).addTo(map);
+
+    // Начальная позиция
+    var group = new L.featureGroup([markersGroup]);
+    map.fitBounds(group.getBounds(), { padding: [50, 50] });
+
+    // =========================================================
+    // 3. ПРАВИЛЬНАЯ ЛОГИКА ВЗАИМОДЕЙСТВИЯ (DOM EVENTS)
+    // =========================================================
+    
+    // Слушаем события НА САМОМ БЛОКЕ DIV, а не внутри Leaflet.
+    // Это гарантирует, что мы ловим только действия человека.
+    const mapDiv = document.getElementById('map');
+    const userEvents = ['mousedown', 'touchstart', 'wheel', 'keydown'];
+
+    userEvents.forEach(evt => {
+        mapDiv.addEventListener(evt, () => {
+            // Человек тронул карту!
+            isUserInteracting = true;
+            lastInteractionTime = Date.now();
+            updateStatus(false);
+            
+            // Останавливаем текущий полет карты
+            map.stop(); 
+        }, { passive: true }); // passive для лучшей производительности скролла
+    });
+
+    function updateStatus(active) {
+        const text = document.getElementById('status-text');
+        const box = document.getElementById('status-bar');
+        const spinner = document.getElementById('spinner');
+        
+        if (active) {
+            text.innerText = "Авто-тур активен. Летим к точке...";
+            box.classList.remove('alert-warning');
+            box.classList.add('alert-success');
+            spinner.style.display = 'inline-block';
+        } else {
+            // Показываем таймер обратного отсчета (примерно)
+            text.innerText = "Пауза. Вы управляете картой. (Ждем 5 сек)";
+            box.classList.remove('alert-success');
+            box.classList.add('alert-warning');
+            spinner.style.display = 'none';
+        }
+    }
+
+    // =========================================================
+    // 4. ГЛАВНЫЙ ЦИКЛ ТУРА
+    // =========================================================
+    
+    function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    async function runTour() {
+        // Даем карте прогрузиться перед стартом
+        await wait(2000);
+
+        while (true) {
+            // --- БЛОК 1: ПРОВЕРКА ПАУЗЫ ---
+            // Если с последнего касания прошло меньше 5000 мс
+            if (Date.now() - lastInteractionTime < 5000) {
+                if (!isUserInteracting) {
+                    isUserInteracting = true; // Включаем режим паузы
+                    updateStatus(false);
+                }
+                await wait(500); // Ждем и проверяем снова
+                continue; // Начинаем цикл заново, не летим никуда
+            }
+            
+            // Если пауза закончилась
+            if (isUserInteracting) {
+                isUserInteracting = false;
+                updateStatus(true);
+            }
+
+            // --- БЛОК 2: ПОЛЕТ ---
+            let currentStop = stops[currentStopIndex];
+            let marker = markersList[currentStopIndex];
+            let targetZoom = currentStop.zoom || 12;
+
+            // Красивая подсветка в меню
+            document.querySelectorAll('.list-group-item').forEach(el => el.classList.remove('active-item'));
+            let activeLink = document.getElementById('link-' + currentStopIndex);
+            if (activeLink) {
+                activeLink.classList.add('active-item');
+                // Прокрутка меню к активному элементу
+                activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Летим!
+            // duration: 4 секунды (баланс скорости и прогрузки)
+            map.flyTo(currentStop.coords, targetZoom, { duration: 4, easeLinearity: 0.2 });
+
+            // Ждем окончания полета (4 сек), но каждую 0.1 сек проверяем, не прервал ли нас пользователь
+            let flightInterrupted = false;
+            for (let t = 0; t < 4200; t += 100) {
+                if (Date.now() - lastInteractionTime < 5000) { flightInterrupted = true; break; }
+                await wait(100);
+            }
+            if (flightInterrupted) continue; // Если прервали - уходим на проверку паузы
+
+            // --- БЛОК 3: СТОЯНКА НА ТОЧКЕ ---
+            marker.openPopup();
+            
+            // Ждем 5 секунд (как вы просили)
+            let pauseInterrupted = false;
+            for (let t = 0; t < 5000; t += 100) {
+                if (Date.now() - lastInteractionTime < 5000) { pauseInterrupted = true; break; }
+                await wait(100);
+            }
+            
+            if (!pauseInterrupted) {
+                marker.closePopup();
+                // Переходим к следующему, только если никто не мешал
+                currentStopIndex++;
+                if (currentStopIndex >= stops.length) currentStopIndex = 0;
+            }
+        }
+    }
+
+    // Запуск
+    runTour();
+
+</script>
+{% endblock %}
