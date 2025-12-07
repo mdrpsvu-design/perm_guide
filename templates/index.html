@@ -4,7 +4,7 @@
 
 <!-- ГЕРОЙ-БЛОК (Заставка) -->
 <div class="position-relative p-5 mb-5 text-center text-white rounded-3 shadow" 
-     style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Kama_River_in_Perm.jpg/1280px-Kama_River_in_Perm.jpg'); background-size: cover; background-position: center; min-height: 500px; display: flex; align-items: center; justify-content: center;"
+     style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://th.bing.com/th/id/OIP.J26QWQd1WYy2XMjUZpfEzgHaDp?o=7&cb=ucfimg2&rm=3&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3'); background-size: cover; background-position: center; min-height: 500px; display: flex; align-items: center; justify-content: center;"
      data-aos="zoom-in"> <!-- Анимация увеличения при загрузке -->
     
     <div class="col-lg-8 mx-auto">
@@ -27,10 +27,11 @@
             <h2 class="featurette-heading fw-bold text-success">{{ info.geography_title }}</h2>
             <p class="lead text-secondary">{{ info.geography_text }}</p>
         </div>
-        <div class="col-md-5" data-aos="fade-left"> <!-- Выплывает слева -->
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Polud_mountain.jpg/640px-Polud_mountain.jpg" 
+        <div class="col-md-5" data-aos="fade-left">
+            <img src="/static/img/nature.webp" 
                  class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" 
-                 alt="Природа Перми">
+                 alt="Природа Перми"
+                 style="width: 100%; height: 350px; object-fit: cover;">
         </div>
     </div>
 
@@ -42,10 +43,12 @@
             <h2 class="featurette-heading fw-bold text-primary">{{ info.economy_title }}</h2>
             <p class="lead text-secondary">{{ info.economy_text }}</p>
         </div>
-        <div class="col-md-5 order-md-1" data-aos="fade-right">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Perm_Motors_MC-21_engine.jpeg/640px-Perm_Motors_MC-21_engine.jpeg" 
+         <div class="col-md-5 order-md-1" data-aos="fade-right">
+            <!-- Ссылка теперь ведет на вашу папку /static/img/factory.jpg -->
+            <img src="/static/img/factory.webp" 
                  class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" 
-                 alt="Пермские моторы">
+                 alt="Пермские моторы"
+                 style="width: 100%; height: 350px; object-fit: cover;">
         </div>
     </div>
 
