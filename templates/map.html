@@ -51,7 +51,22 @@
     var stops = {{ stops | tojson }};
     var isUserInteracting = false;
     var lastInteractionTime = 0;
+    
+    // === НОВОЕ: Читаем URL параметры ===
+    // Ищем ?start_at=... в адресной строке
+    const urlParams = new URLSearchParams(window.location.search);
+    const startAtId = urlParams.get('start_at');
+    
+    // Если параметр есть, ищем индекс этого ID. Если нет - начинаем с 0.
     var currentStopIndex = 0;
+    if (startAtId) {
+        // findIndex находит номер элемента в массиве
+        let foundIndex = stops.findIndex(s => s.id == startAtId);
+        if (foundIndex !== -1) {
+            currentStopIndex = foundIndex;
+        }
+    }
+    // ===================================
     
     // 2. КАРТА
     var map = L.map('map', {
@@ -96,7 +111,13 @@
     }).addTo(map);
 
     var group = new L.featureGroup([markersGroup]);
-    map.fitBounds(group.getBounds(), { padding: [50, 50] });
+    
+    // Если мы продолжаем маршрут, центрируемся сразу на нужной точке, а не на всей карте
+    if (startAtId) {
+         // Ничего не делаем, flyTo сработает сразу
+    } else {
+         map.fitBounds(group.getBounds(), { padding: [50, 50] });
+    }
 
     // 3. ОТСЛЕЖИВАНИЕ ДЕЙСТВИЙ (ПАУЗА)
     const mapDiv = document.getElementById('map');
@@ -113,22 +134,21 @@
     // 4. ГЛАВНЫЙ ЦИКЛ
     function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-    // Функция безопасного скролла
     function scrollToActiveItem(index) {
         const container = document.getElementById('sidebar-container');
         const activeLink = document.getElementById('link-' + index);
         
         if (container && activeLink) {
             const topPos = activeLink.offsetTop - (container.clientHeight / 2) + (activeLink.clientHeight / 2);
-            container.scrollTo({
-                top: topPos,
-                behavior: 'smooth'
-            });
+            container.scrollTo({ top: topPos, behavior: 'smooth' });
         }
     }
 
     async function runTour() {
-        await wait(2000);
+        // Если мы пришли с другой страницы (startAtId есть), стартуем быстрее
+        // Если открыли карту с нуля - ждем 2 секунды
+        let initialDelay = startAtId ? 1000 : 2000;
+        await wait(initialDelay);
 
         while (true) {
             // ПРОВЕРКА ПАУЗЫ
@@ -139,12 +159,11 @@
             }
             if (isUserInteracting) isUserInteracting = false;
 
-            // ПОДГОТОВКА К ПОЛЕТУ
+            // ПОДГОТОВКА
             let currentStop = stops[currentStopIndex];
             let marker = markersList[currentStopIndex];
             let targetZoom = currentStop.zoom || 12;
 
-            // Подсветка меню и БЕЗОПАСНЫЙ скролл
             document.querySelectorAll('.list-group-item').forEach(el => el.classList.remove('active-item'));
             let activeLink = document.getElementById('link-' + currentStopIndex);
             if (activeLink) {
