@@ -76,11 +76,28 @@
         marker.addTo(markersGroup);
     });
 
+    // 1. Собираем массив только из координат, в том порядке, в каком они идут в main.py
+    var routeCoordinates = stops.map(function(stop) {
+        return stop.coords;
+    });
+
+    // 2. Рисуем полилинию (линию маршрута)
+    var routeLine = L.polyline(routeCoordinates, {
+        color: '#d32f2f',       // Цвет линии (красный)
+        weight: 4,              // Толщина линии
+        opacity: 0.7,           // Прозрачность
+        dashArray: '10, 10',    // Пунктир (красиво выглядит для маршрутов)
+        lineJoin: 'round'       // Сглаженные углы
+    }).addTo(map);
+    
+    // ====================================
+
     // 6. Добавляем группу маркеров на карту
     markersGroup.addTo(map);
 
-    // 7. ГЛАВНОЕ: Автоматически подгоняем карту, чтобы влезли все маркеры
-    // padding: [50, 50] добавляет отступы в пикселях, чтобы маркеры не прилипали к краям
-    map.fitBounds(markersGroup.getBounds(), { padding: [50, 50] });
+    // 7. Автоматически подгоняем карту (этот код у вас уже был, оставьте его)
+    // Обратите внимание: теперь мы можем учитывать и границы линии тоже
+    var group = new L.featureGroup([markersGroup, routeLine]);
+    map.fitBounds(group.getBounds(), { padding: [50, 50] });
 </script>
 {% endblock %}
