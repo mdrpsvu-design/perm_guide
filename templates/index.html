@@ -1,92 +1,115 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- БЛОК ПРИВЕТСТВИЯ -->
-<div class="p-5 mb-4 bg-light rounded-3 shadow-sm" style="background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Kama_River_in_Perm.jpg/1200px-Kama_River_in_Perm.jpg'); background-size: cover; background-position: center;">
-    <div class="container-fluid py-5">
-        <h1 class="display-4 fw-bold text-dark">{{ info.title }}</h1>
-        <p class="col-md-8 fs-4 text-muted">{{ info.subtitle }}</p>
-        <hr class="my-4">
-        <p>Добро пожаловать в интерактивный путеводитель. Узнайте историю промышленного сердца Урала и пройдите наш уникальный маршрут.</p>
-        <a href="/map" class="btn btn-success btn-lg px-4 gap-3 shadow">
-            Построить маршрут 🚀
-        </a>
-    </div>
-</div>
 
-<!-- ИНФОРМАЦИОННЫЕ БЛОКИ -->
-<div class="row align-items-stretch g-4">
+<!-- ГЕРОЙ-БЛОК (Заставка) -->
+<div class="position-relative p-5 mb-5 text-center text-white rounded-3 shadow" 
+     style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Kama_River_in_Perm.jpg/1280px-Kama_River_in_Perm.jpg'); background-size: cover; background-position: center; min-height: 500px; display: flex; align-items: center; justify-content: center;"
+     data-aos="zoom-in"> <!-- Анимация увеличения при загрузке -->
     
-    <!-- География -->
-    <div class="col-md-6">
-        <div class="card h-100 border-0 shadow-sm hover-effect">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <span class="fs-2 me-3">🌲</span>
-                    <h2 class="card-title h4 m-0">География и Природа</h2>
-                </div>
-                <p class="card-text text-secondary">{{ info.geography }}</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Экономика -->
-    <div class="col-md-6">
-        <div class="card h-100 border-0 shadow-sm hover-effect">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <span class="fs-2 me-3">🏭</span>
-                    <h2 class="card-title h4 m-0">Экономика и Ресурсы</h2>
-                </div>
-                <p class="card-text text-secondary">{{ info.economy }}</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Культура -->
-    <div class="col-md-6">
-        <div class="card h-100 border-0 shadow-sm hover-effect">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <span class="fs-2 me-3">🎨</span>
-                    <h2 class="card-title h4 m-0">Культура и Традиции</h2>
-                </div>
-                <p class="card-text text-secondary">{{ info.culture }}</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Религия -->
-    <div class="col-md-6">
-        <div class="card h-100 border-0 shadow-sm hover-effect">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <span class="fs-2 me-3">⛪</span>
-                    <h2 class="card-title h4 m-0">Духовные центры</h2>
-                </div>
-                <p class="card-text text-secondary">{{ info.religion }}</p>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!-- Блок призыва к действию -->
-<div class="row mt-5 text-center">
     <div class="col-lg-8 mx-auto">
-        <h3 class="mb-3">Готовы увидеть это своими глазами?</h3>
-        <p class="lead text-muted">Мы подготовили маршрут из 10 уникальных точек: от подземелий Кунгура до вершин Полюда.</p>
-        <a href="/map" class="btn btn-outline-dark btn-lg mt-2">Перейти к карте</a>
+        <h1 class="display-3 fw-bold mb-3" style="text-shadow: 2px 2px 10px rgba(0,0,0,0.8);">{{ info.title }}</h1>
+        <p class="fs-4 mb-4">{{ info.subtitle }}</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="/map" class="btn btn-success btn-lg px-4 gap-3 fw-bold shadow-lg scale-hover">
+                🚀 Начать путешествие
+            </a>
+        </div>
     </div>
 </div>
 
+<!-- СЕТКА С ИНФОРМАЦИЕЙ -->
+<div class="container marketing">
+
+    <!-- Ряд 1: География (Слева) и Экономика (Справа) -->
+    <div class="row featurette mb-5 align-items-center">
+        <div class="col-md-7" data-aos="fade-right"> <!-- Выплывает справа -->
+            <h2 class="featurette-heading fw-bold text-success">{{ info.geography_title }}</h2>
+            <p class="lead text-secondary">{{ info.geography_text }}</p>
+        </div>
+        <div class="col-md-5" data-aos="fade-left"> <!-- Выплывает слева -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Polud_mountain.jpg/640px-Polud_mountain.jpg" 
+                 class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" 
+                 alt="Природа Перми">
+        </div>
+    </div>
+
+    <hr class="featurette-divider my-5">
+
+    <!-- Ряд 2: Экономика (Картинка слева, текст справа) -->
+    <div class="row featurette mb-5 align-items-center">
+        <div class="col-md-7 order-md-2" data-aos="fade-left">
+            <h2 class="featurette-heading fw-bold text-primary">{{ info.economy_title }}</h2>
+            <p class="lead text-secondary">{{ info.economy_text }}</p>
+        </div>
+        <div class="col-md-5 order-md-1" data-aos="fade-right">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Perm_Motors_MC-21_engine.jpeg/640px-Perm_Motors_MC-21_engine.jpeg" 
+                 class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" 
+                 alt="Пермские моторы">
+        </div>
+    </div>
+
+    <hr class="featurette-divider my-5">
+
+    <!-- Ряд 3: Три карточки в ряд (История, Культура, Люди) -->
+    <div class="row text-center">
+        
+        <!-- Карточка 1: История -->
+        <div class="col-lg-4 mb-4" data-aos="flip-left" data-aos-delay="100"> <!-- Эффект переворота -->
+            <div class="card h-100 border-0 shadow-sm hover-card">
+                <div class="card-body">
+                    <div class="display-4 text-warning mb-3">🦕</div> <!-- Иконка динозавра -->
+                    <h3 class="fw-bold">{{ info.history_title }}</h3>
+                    <p class="text-muted">{{ info.history_text }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка 2: Культура -->
+        <div class="col-lg-4 mb-4" data-aos="flip-left" data-aos-delay="300"> <!-- Задержка для эффекта "лесенки" -->
+            <div class="card h-100 border-0 shadow-sm hover-card">
+                <div class="card-body">
+                    <div class="display-4 text-danger mb-3">🎭</div>
+                    <h3 class="fw-bold">{{ info.culture_title }}</h3>
+                    <p class="text-muted">{{ info.culture_text }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Карточка 3: Люди -->
+        <div class="col-lg-4 mb-4" data-aos="flip-left" data-aos-delay="500">
+            <div class="card h-100 border-0 shadow-sm hover-card">
+                <div class="card-body">
+                    <div class="display-4 text-success mb-3">🥟</div>
+                    <h3 class="fw-bold">{{ info.people_title }}</h3>
+                    <p class="text-muted">{{ info.people_text }}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Финальный призыв -->
+    <div class="row py-5" data-aos="fade-up">
+        <div class="col-lg-8 mx-auto text-center">
+            <h3 class="mb-3">Убедитесь во всем сами</h3>
+            <p class="lead mb-4">Мы подготовили маршрут по 10 самым знаковым местам края.</p>
+            <a href="/map" class="btn btn-outline-dark btn-lg">Перейти к карте маршрута →</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Дополнительные стили для красоты -->
 <style>
-    /* Легкий эффект при наведении на карточки */
-    .hover-effect {
-        transition: transform 0.3s ease;
-    }
-    .hover-effect:hover {
-        transform: translateY(-5px);
+    .scale-hover { transition: transform 0.2s; }
+    .scale-hover:hover { transform: scale(1.05); }
+    
+    .hover-card { transition: transform 0.3s, box-shadow 0.3s; }
+    .hover-card:hover { 
+        transform: translateY(-10px); 
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
     }
 </style>
+
 {% endblock %}
